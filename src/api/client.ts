@@ -9,6 +9,7 @@ router.use(function (req :Request, res:Response, next: NextFunction) {
 })
 router.get('/', (req: Request,res: Response)=>{
   Client.find({}).then((results:any)=>{
+    console.log('df')
     res.send(results)
   })
 })

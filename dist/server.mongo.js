@@ -22,7 +22,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "123569e73f1457c9ab2b";
+/******/ 	var hotCurrentHash = "bcde5735d57dafe1a812";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -762,7 +762,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("var router = __webpack_require__(/*! express */ \"express\").Router();\nvar mongoose = __webpack_require__(/*! ../mongoInstance.ts */ \"./src/mongoInstance.ts\").getMongoose();\nvar clientSchema = __webpack_require__(/*! ../schema/Client.schema.ts */ \"./src/schema/Client.schema.ts\").default;\nvar Client = mongoose.model('Client', clientSchema);\nrouter.use(function (req, res, next) {\n    // .. some logic here .. like any other middleware\n    next();\n});\nrouter.get('/', function (req, res) {\n    Client.find({}).then(function (results) {\n        res.send(results);\n    });\n});\nrouter.post('/', function (req, res) {\n    Client.create(req.body, function (err, newClient) {\n        if (err) {\n            res.send({ path: err.path, message: err.message });\n        }\n        else {\n            res.send(newClient._id);\n        }\n    });\n});\nmodule.exports = router;\n\n\n//# sourceURL=webpack:///./src/api/client.ts?");
+eval("var router = __webpack_require__(/*! express */ \"express\").Router();\nvar mongoose = __webpack_require__(/*! ../mongoInstance.ts */ \"./src/mongoInstance.ts\").getMongoose();\nvar clientSchema = __webpack_require__(/*! ../schema/Client.schema.ts */ \"./src/schema/Client.schema.ts\").default;\nvar Client = mongoose.model('Client', clientSchema);\nrouter.use(function (req, res, next) {\n    // .. some logic here .. like any other middleware\n    next();\n});\nrouter.get('/', function (req, res) {\n    Client.find({}).then(function (results) {\n        console.log('df');\n        res.send(results);\n    });\n});\nrouter.post('/', function (req, res) {\n    Client.create(req.body, function (err, newClient) {\n        if (err) {\n            res.send({ path: err.path, message: err.message });\n        }\n        else {\n            res.send(newClient._id);\n        }\n    });\n});\nmodule.exports = router;\n\n\n//# sourceURL=webpack:///./src/api/client.ts?");
 
 /***/ }),
 
@@ -774,7 +774,7 @@ eval("var router = __webpack_require__(/*! express */ \"express\").Router();\nva
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _mongoInstance_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mongoInstance.ts */ \"./src/mongoInstance.ts\");\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! body-parser */ \"body-parser\");\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(body_parser__WEBPACK_IMPORTED_MODULE_1__);\nvar express = __webpack_require__(/*! express */ \"express\");\nvar mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\nvar clientRouter = __webpack_require__(/*! ./api/client.ts */ \"./src/api/client.ts\");\n\n\nvar app = express();\nObject(_mongoInstance_ts__WEBPACK_IMPORTED_MODULE_0__[\"initMongoose\"])();\napp.use(body_parser__WEBPACK_IMPORTED_MODULE_1___default()());\napp.use('/client', clientRouter);\napp.listen(8888);\n/* harmony default export */ __webpack_exports__[\"default\"] = (app);\n\n\n//# sourceURL=webpack:///./src/app.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _mongoInstance_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mongoInstance.ts */ \"./src/mongoInstance.ts\");\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! body-parser */ \"body-parser\");\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(body_parser__WEBPACK_IMPORTED_MODULE_1__);\nvar express = __webpack_require__(/*! express */ \"express\");\nvar clientRouter = __webpack_require__(/*! ./api/client.ts */ \"./src/api/client.ts\");\n\n\nvar app = express();\nObject(_mongoInstance_ts__WEBPACK_IMPORTED_MODULE_0__[\"initMongoose\"])();\napp.use(body_parser__WEBPACK_IMPORTED_MODULE_1___default()());\napp.use('/client', clientRouter);\napp.listen(8888);\n/* harmony default export */ __webpack_exports__[\"default\"] = (app);\n\n\n//# sourceURL=webpack:///./src/app.ts?");
 
 /***/ }),
 

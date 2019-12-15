@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require('mongoose');
 const clientRouter = require('./api/client.ts');
 import {initMongoose} from './mongoInstance.ts';
 import bodyParser from "body-parser"
