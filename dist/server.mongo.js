@@ -22,7 +22,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "bcde5735d57dafe1a812";
+/******/ 	var hotCurrentHash = "489ac85cd1d0ab8c0f48";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -762,7 +762,18 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("var router = __webpack_require__(/*! express */ \"express\").Router();\nvar mongoose = __webpack_require__(/*! ../mongoInstance.ts */ \"./src/mongoInstance.ts\").getMongoose();\nvar clientSchema = __webpack_require__(/*! ../schema/Client.schema.ts */ \"./src/schema/Client.schema.ts\").default;\nvar Client = mongoose.model('Client', clientSchema);\nrouter.use(function (req, res, next) {\n    // .. some logic here .. like any other middleware\n    next();\n});\nrouter.get('/', function (req, res) {\n    Client.find({}).then(function (results) {\n        console.log('df');\n        res.send(results);\n    });\n});\nrouter.post('/', function (req, res) {\n    Client.create(req.body, function (err, newClient) {\n        if (err) {\n            res.send({ path: err.path, message: err.message });\n        }\n        else {\n            res.send(newClient._id);\n        }\n    });\n});\nmodule.exports = router;\n\n\n//# sourceURL=webpack:///./src/api/client.ts?");
+eval("var router = __webpack_require__(/*! express */ \"express\").Router();\r\nvar mongoose = __webpack_require__(/*! ../mongoInstance.ts */ \"./src/mongoInstance.ts\").getMongoose();\r\nvar clientSchema = __webpack_require__(/*! ../schema/Client.schema.ts */ \"./src/schema/Client.schema.ts\").default;\r\nvar Client = mongoose.model('Client', clientSchema);\r\nrouter.use(function (req, res, next) {\r\n    // .. some logic here .. like any other middleware\r\n    next();\r\n});\r\nrouter.get('/', function (req, res) {\r\n    Client.find({}).then(function (results) {\r\n        res.send(results);\r\n    });\r\n});\r\nrouter.post('/', function (req, res) {\r\n    Client.create(req.body, function (err, newClient) {\r\n        if (err) {\r\n            res.send({ path: err.path, message: err.message });\r\n        }\r\n        else {\r\n            res.send(newClient._id);\r\n        }\r\n    });\r\n});\r\nmodule.exports = router;\r\n\n\n//# sourceURL=webpack:///./src/api/client.ts?");
+
+/***/ }),
+
+/***/ "./src/api/user.ts":
+/*!*************************!*\
+  !*** ./src/api/user.ts ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("var router = __webpack_require__(/*! express */ \"express\").Router();\r\nvar mongoose = __webpack_require__(/*! ../mongoInstance.ts */ \"./src/mongoInstance.ts\").getMongoose();\r\nrouter.use(function (req, res, next) {\r\n    // .. some logic here .. like any other middleware\r\n    next();\r\n});\r\nrouter.post('/validate', function (req, res) {\r\n    console.log('yellss');\r\n    res.send('yeslls');\r\n});\r\nrouter.post('/register', function (req, res) {\r\n    console.log('register');\r\n    res.send('yeslls');\r\n});\r\nmodule.exports = router;\r\n\n\n//# sourceURL=webpack:///./src/api/user.ts?");
 
 /***/ }),
 
@@ -774,7 +785,7 @@ eval("var router = __webpack_require__(/*! express */ \"express\").Router();\nva
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _mongoInstance_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mongoInstance.ts */ \"./src/mongoInstance.ts\");\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! body-parser */ \"body-parser\");\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(body_parser__WEBPACK_IMPORTED_MODULE_1__);\nvar express = __webpack_require__(/*! express */ \"express\");\nvar clientRouter = __webpack_require__(/*! ./api/client.ts */ \"./src/api/client.ts\");\n\n\nvar app = express();\nObject(_mongoInstance_ts__WEBPACK_IMPORTED_MODULE_0__[\"initMongoose\"])();\napp.use(body_parser__WEBPACK_IMPORTED_MODULE_1___default()());\napp.use('/client', clientRouter);\napp.listen(8888);\n/* harmony default export */ __webpack_exports__[\"default\"] = (app);\n\n\n//# sourceURL=webpack:///./src/app.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _mongoInstance_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mongoInstance.ts */ \"./src/mongoInstance.ts\");\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! body-parser */ \"body-parser\");\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(body_parser__WEBPACK_IMPORTED_MODULE_1__);\nvar express = __webpack_require__(/*! express */ \"express\");\r\nvar clientRouter = __webpack_require__(/*! ./api/client.ts */ \"./src/api/client.ts\");\r\nvar userRouter = __webpack_require__(/*! ./api/user.ts */ \"./src/api/user.ts\");\r\n\r\n\r\nvar app = express();\r\nObject(_mongoInstance_ts__WEBPACK_IMPORTED_MODULE_0__[\"initMongoose\"])();\r\napp.use(body_parser__WEBPACK_IMPORTED_MODULE_1___default()());\r\napp.use('/client', clientRouter);\r\napp.use('/user', userRouter);\r\napp.listen(8888);\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (app);\r\n\n\n//# sourceURL=webpack:///./src/app.ts?");
 
 /***/ }),
 
@@ -786,7 +797,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _mon
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"initMongoose\", function() { return initMongoose; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"getMongoose\", function() { return getMongoose; });\nvar mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\nfunction initMongoose() {\n    mongoose.connect('mongodb://linh:test123@ds057538.mlab.com:57538/tax-system', { useNewUrlParser: true, useUnifiedTopology: true }).catch(function (err) { return console.log(err); });\n}\nfunction getMongoose() {\n    return mongoose;\n}\n\n\n//# sourceURL=webpack:///./src/mongoInstance.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"initMongoose\", function() { return initMongoose; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"getMongoose\", function() { return getMongoose; });\nvar mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\r\nfunction initMongoose() {\r\n    mongoose.connect('mongodb://linh:test123@ds057538.mlab.com:57538/tax-system', { useNewUrlParser: true, useUnifiedTopology: true }).catch(function (err) { return console.log(err); });\r\n}\r\nfunction getMongoose() {\r\n    return mongoose;\r\n}\r\n\n\n//# sourceURL=webpack:///./src/mongoInstance.ts?");
 
 /***/ }),
 
@@ -798,7 +809,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\nvar mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\nvar Schema = mongoose.Schema;\nvar clientSchema = new Schema({\n    first_name: String,\n    last_name: String,\n    coming_from: String,\n    date_of_birth: Date,\n    civil_status: String,\n    amount_of_children: Number,\n    home_address: String,\n    foreign_address: String,\n    email: String,\n    telephone: String,\n    title: String,\n});\n/* harmony default export */ __webpack_exports__[\"default\"] = (clientSchema);\n\n\n//# sourceURL=webpack:///./src/schema/Client.schema.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\nvar mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\r\nvar Schema = mongoose.Schema;\r\nvar clientSchema = new Schema({\r\n    first_name: String,\r\n    last_name: String,\r\n    coming_from: String,\r\n    date_of_birth: Date,\r\n    civil_status: String,\r\n    amount_of_children: Number,\r\n    home_address: String,\r\n    foreign_address: String,\r\n    email: String,\r\n    telephone: String,\r\n    title: String,\r\n});\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (clientSchema);\r\n\n\n//# sourceURL=webpack:///./src/schema/Client.schema.ts?");
 
 /***/ }),
 

@@ -12,8 +12,7 @@ const clientSchema = new Schema({
 	home_address :String,
 	foreign_address :String,
 	email :String,
-	telephone :String,
-  title:  String,
+	telephone :String
 
 });
 export default clientSchema
