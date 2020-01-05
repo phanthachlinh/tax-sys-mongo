@@ -7,7 +7,7 @@
     "jsx": "react",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "types" : ["express"]
+    "types" : ["express","jest"]
 
   }
 }
