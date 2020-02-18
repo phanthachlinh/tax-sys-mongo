@@ -9,6 +9,6 @@ export default interface IClient {
   foreign_address :String,
   email :String,
   telephone :String,
-  FK_user: Number
+  FK_User: Number
 
 }

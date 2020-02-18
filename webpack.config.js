@@ -21,5 +21,9 @@ module.exports = {
     net: 'empty'
   },
   externals: [nodeExternals()],
-  mode: 'development'
+  mode: 'development',
+  resolve: {
+    // Add .ts and .tsx as a resolvable extension.
+    extensions: [".ts", ".tsx", ".js"]
+}
 }

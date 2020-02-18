@@ -22,7 +22,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "fc709c2c3425525c278f";
+/******/ 	var hotCurrentHash = "f34b585560ef9a33d28f";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -755,6 +755,17 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/api/case.ts":
+/*!*************************!*\
+  !*** ./src/api/case.ts ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("var router = __webpack_require__(/*! express */ \"express\").Router();\nvar mongoose = __webpack_require__(/*! ../mongoInstance.ts */ \"./src/mongoInstance.ts\").getMongoose();\nvar caseSchema = __webpack_require__(/*! ../schema/Case.schema.ts */ \"./src/schema/Case.schema.ts\").default;\nvar multer = __webpack_require__(/*! multer */ \"multer\");\nvar upload = multer();\nvar Case = mongoose.model('Case', caseSchema);\nrouter.get('/', function (req, res) {\n    console.log(req.query);\n    console.log((5 * (parseInt(req.query.page) - 1)));\n    Case.find({ FK_Mongo_Client: req.query.clientId }, null, { skip: (5 * (parseInt(req.query.page) - 1)), limit: 5 }).sort({ date_created: -1 }).then(function (results) {\n        console.log(results);\n        Case.count({}).then(function (count) {\n            res.send({ count: count, results: results });\n        });\n    });\n});\nrouter.post('/', function (req, res) {\n    console.log(req);\n    if (typeof req.body.status === 'undefined') {\n        res.status(422).send('Missing param status');\n        return;\n    }\n    if (typeof req.body.country\n        == 'undefined') {\n        res.status(422).send('Missing param country');\n        return;\n    }\n    if (typeof req.body.FK_User === 'undefined') {\n        res.status(422).send('Missing param fk user');\n        return;\n    }\n    if (typeof req.body.FK_Mongo_Client === 'undefined') {\n        res.status(422).send('Missing param client');\n        return;\n    }\n    req.body.date_created = Date.now();\n    var newCase = new Case(req.body);\n    newCase.save(function (err) {\n        if (err) {\n            res.status(500).send({ path: err.path, message: err.message });\n            return;\n        }\n        else {\n            res.status(200).send(newCase);\n        }\n    });\n});\nrouter.delete('/', function (req, res) {\n    if (!req.query._id) {\n        res.status(422).send('Missing param id');\n        return;\n    }\n    Case.deleteOne({ _id: req.query._id }, function (err) {\n        if (err)\n            throw err;\n        console.log(req.body);\n        res.status(200).send({ _id: req.query._id });\n    });\n});\nrouter.put('/', upload.none(), function (req, res) {\n    console.log(req.body);\n    if (!req.body._id) {\n        res.status(422).send('Missing param _id');\n        return;\n    }\n    Case.findByIdAndUpdate(req.body._id, req.body, { new: true }, function (err) {\n        // Handle any possible database errors\n        if (err)\n            return res.status(500).send(err);\n        return res.status(200).json(req.body);\n    });\n});\nmodule.exports = router;\n\n\n//# sourceURL=webpack:///./src/api/case.ts?");
+
+/***/ }),
+
 /***/ "./src/api/client.ts":
 /*!***************************!*\
   !*** ./src/api/client.ts ***!
@@ -762,18 +773,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("var router = __webpack_require__(/*! express */ \"express\").Router();\nvar mongoose = __webpack_require__(/*! ../mongoInstance.ts */ \"./src/mongoInstance.ts\").getMongoose();\nvar clientSchema = __webpack_require__(/*! ../schema/Client.schema.ts */ \"./src/schema/Client.schema.ts\").default;\nvar Client = mongoose.model('Client', clientSchema);\nrouter.use(function (req, res, next) {\n    // .. some logic here .. like any other middleware\n    next();\n});\nrouter.get('/', function (req, res) {\n    Client.find({}).then(function (results) {\n        res.send(results);\n    });\n});\nrouter.post('/', function (req, res) {\n    Client.create(req.body, function (err, newClient) {\n        if (err) {\n            res.send({ path: err.path, message: err.message });\n        }\n        else {\n            res.send(newClient._id);\n        }\n    });\n});\nmodule.exports = router;\n\n\n//# sourceURL=webpack:///./src/api/client.ts?");
-
-/***/ }),
-
-/***/ "./src/api/user.ts":
-/*!*************************!*\
-  !*** ./src/api/user.ts ***!
-  \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var router = __webpack_require__(/*! express */ \"express\").Router();\nvar mongoose = __webpack_require__(/*! ../mongoInstance.ts */ \"./src/mongoInstance.ts\").getMongoose();\nrouter.use(function (req, res, next) {\n    // .. some logic here .. like any other middleware\n    next();\n});\nrouter.post('/validate', function (req, res) {\n    console.log('yellss');\n    res.send('yeslls');\n});\nrouter.post('/register', function (req, res) {\n    console.log('register');\n    res.send('yeslls');\n});\nmodule.exports = router;\n\n\n//# sourceURL=webpack:///./src/api/user.ts?");
+eval("var router = __webpack_require__(/*! express */ \"express\").Router();\nvar mongoose = __webpack_require__(/*! ../mongoInstance.ts */ \"./src/mongoInstance.ts\").getMongoose();\nvar clientSchema = __webpack_require__(/*! ../schema/Client.schema.ts */ \"./src/schema/Client.schema.ts\").default;\nvar multer = __webpack_require__(/*! multer */ \"multer\");\nvar upload = multer();\nvar Client = mongoose.model('Client', clientSchema);\nrouter.get('/', function (req, res) {\n    var searchObject = {};\n    if (req.query.searchTerm != '')\n        searchObject =\n            [\n                { first_name: { $regex: req.query.searchTerm, $options: \"g\" } },\n                { last_name: { $regex: req.query.searchTerm, $options: \"g\" } }\n            ];\n    console.log(req.query.searchTerm == '' ? {} : { $or: searchObject });\n    Client.find(req.query.searchTerm == '' ? {} : { $or: searchObject }, null, { skip: (5 * (parseInt(req.query.page) - 1)), limit: 5 }).sort({ date_created: -1 }).then(function (results) {\n        Client.count(req.query.searchTerm == '' ? {} : { $or: searchObject }).then(function (count) {\n            res.send({ count: count, results: results });\n        });\n    });\n});\nrouter.post('/', upload.none(), function (req, res) {\n    if (!req.body.first_name) {\n        res.status(422).send('Missing param first_name');\n        return;\n    }\n    if (!req.body.last_name) {\n        res.status(422).send('Missing param last_name');\n        return;\n    }\n    if (typeof req.body.coming_from === 'undefined') {\n        res.status(422).send('Missing param coming_from');\n        return;\n    }\n    if (!req.body.date_of_birth) {\n        res.status(422).send('Missing param date_of_birth');\n        return;\n    }\n    if (typeof req.body.civil_status === 'undefined') {\n        res.status(422).send('Missing param civil_status');\n        return;\n    }\n    if (!req.body.amount_of_children) {\n        res.status(422).send('Missing param amount_of_children');\n        return;\n    }\n    if (!req.body.home_address) {\n        res.status(422).send('Missing param home_address');\n        return;\n    }\n    if (!req.body.foreign_address) {\n        res.status(422).send('Missing param foreign_address');\n        return;\n    }\n    if (!req.body.email) {\n        res.status(422).send('Missing param email');\n        return;\n    }\n    if (!req.body.telephone) {\n        res.status(422).send('Missing param telephone');\n        return;\n    }\n    if (!req.body.FK_User) {\n        res.status(422).send('Missing param FK_user');\n        return;\n    }\n    req.body.date_created = Date.now();\n    var newClient = new Client(req.body);\n    newClient.save(function (err) {\n        if (err) {\n            res.status(500).send({ path: err.path, message: err.message });\n            return;\n        }\n        else {\n            res.send(newClient);\n        }\n    });\n});\nrouter.delete('/', function (req, res) {\n    console.log(req.body);\n    if (!req.body._id) {\n        res.status(422).send('Missing param id');\n        return;\n    }\n    Client.deleteOne({ _id: req.body._id }, function (err) {\n        if (err)\n            throw err;\n        console.log(req.body);\n        res.status(200).send({ _id: req.body._id });\n    });\n});\nrouter.put('/', upload.none(), function (req, res) {\n    if (!req.body._id) {\n        res.status(422).send('Missing param _id');\n        return;\n    }\n    Client.findByIdAndUpdate(req.body._id, req.body, { new: true }, function (err, client) {\n        // Handle any possible database errors\n        if (err)\n            return res.status(500).send(err);\n        return res.status(200).json(client);\n    });\n});\nmodule.exports = router;\n\n\n//# sourceURL=webpack:///./src/api/client.ts?");
 
 /***/ }),
 
@@ -781,11 +781,11 @@ eval("var router = __webpack_require__(/*! express */ \"express\").Router();\nva
 /*!********************!*\
   !*** ./src/app.ts ***!
   \********************/
-/*! exports provided: default */
+/*! exports provided: app, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _mongoInstance_ts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mongoInstance.ts */ \"./src/mongoInstance.ts\");\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! body-parser */ \"body-parser\");\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(body_parser__WEBPACK_IMPORTED_MODULE_1__);\nvar express = __webpack_require__(/*! express */ \"express\");\nvar clientRouter = __webpack_require__(/*! ./api/client.ts */ \"./src/api/client.ts\");\nvar userRouter = __webpack_require__(/*! ./api/user.ts */ \"./src/api/user.ts\");\n\n\nvar app = express();\nObject(_mongoInstance_ts__WEBPACK_IMPORTED_MODULE_0__[\"initMongoose\"])();\napp.use(body_parser__WEBPACK_IMPORTED_MODULE_1___default()());\napp.use('/client', clientRouter);\napp.use('/user', userRouter);\napp.listen(8888);\n/* harmony default export */ __webpack_exports__[\"default\"] = (app);\n\n\n//# sourceURL=webpack:///./src/app.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"app\", function() { return app; });\n/* harmony import */ var _mongoInstance__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mongoInstance */ \"./src/mongoInstance.ts\");\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! body-parser */ \"body-parser\");\n/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(body_parser__WEBPACK_IMPORTED_MODULE_1__);\nvar express = __webpack_require__(/*! express */ \"express\");\nvar clientRouter = __webpack_require__(/*! ./api/client.ts */ \"./src/api/client.ts\");\nvar caseRouter = __webpack_require__(/*! ./api/case.ts */ \"./src/api/case.ts\");\n\n\nvar app = express();\nObject(_mongoInstance__WEBPACK_IMPORTED_MODULE_0__[\"initMongoose\"])();\nvar cors = __webpack_require__(/*! cors */ \"cors\");\napp.use(cors());\napp.use(body_parser__WEBPACK_IMPORTED_MODULE_1__());\napp.use('/client', clientRouter);\napp.use('/case', caseRouter);\nif (true) {\n    app.listen(8888);\n}\n/* harmony default export */ __webpack_exports__[\"default\"] = (app);\n\n\n//# sourceURL=webpack:///./src/app.ts?");
 
 /***/ }),
 
@@ -801,6 +801,18 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 /***/ }),
 
+/***/ "./src/schema/Case.schema.ts":
+/*!***********************************!*\
+  !*** ./src/schema/Case.schema.ts ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\nvar mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\nvar Schema = mongoose.Schema;\nvar caseSchema = new Schema({\n    status: Number,\n    country: String,\n    date_created: Date,\n    FK_User: Number,\n    FK_Mongo_Client: String\n});\n/* harmony default export */ __webpack_exports__[\"default\"] = (caseSchema);\n\n\n//# sourceURL=webpack:///./src/schema/Case.schema.ts?");
+
+/***/ }),
+
 /***/ "./src/schema/Client.schema.ts":
 /*!*************************************!*\
   !*** ./src/schema/Client.schema.ts ***!
@@ -809,7 +821,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\nvar mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\nvar Schema = mongoose.Schema;\nvar clientSchema = new Schema({\n    first_name: String,\n    last_name: String,\n    coming_from: String,\n    date_of_birth: Date,\n    civil_status: String,\n    amount_of_children: Number,\n    home_address: String,\n    foreign_address: String,\n    email: String,\n    telephone: String\n});\n/* harmony default export */ __webpack_exports__[\"default\"] = (clientSchema);\n\n\n//# sourceURL=webpack:///./src/schema/Client.schema.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\nvar mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\nvar Schema = mongoose.Schema;\nvar clientSchema = new Schema({\n    first_name: String,\n    last_name: String,\n    coming_from: Number,\n    date_of_birth: Date,\n    civil_status: Number,\n    amount_of_children: Number,\n    home_address: String,\n    foreign_address: String,\n    email: String,\n    telephone: String,\n    date_created: Date,\n    FK_user: Number\n});\n/* harmony default export */ __webpack_exports__[\"default\"] = (clientSchema);\n\n\n//# sourceURL=webpack:///./src/schema/Client.schema.ts?");
 
 /***/ }),
 
@@ -821,6 +833,17 @@ eval("__webpack_require__.r(__webpack_exports__);\nvar mongoose = __webpack_requ
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"body-parser\");\n\n//# sourceURL=webpack:///external_%22body-parser%22?");
+
+/***/ }),
+
+/***/ "cors":
+/*!***********************!*\
+  !*** external "cors" ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"cors\");\n\n//# sourceURL=webpack:///external_%22cors%22?");
 
 /***/ }),
 
@@ -843,6 +866,17 @@ eval("module.exports = require(\"express\");\n\n//# sourceURL=webpack:///externa
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"mongoose\");\n\n//# sourceURL=webpack:///external_%22mongoose%22?");
+
+/***/ }),
+
+/***/ "multer":
+/*!*************************!*\
+  !*** external "multer" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"multer\");\n\n//# sourceURL=webpack:///external_%22multer%22?");
 
 /***/ })
 

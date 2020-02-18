@@ -3,18 +3,26 @@ import IClient from './client.d';
 var router = require('express').Router();
 var mongoose = require('../mongoInstance.ts').getMongoose();
 const clientSchema = require('../schema/Client.schema.ts').default;
+const multer = require('multer');
+const upload = multer()
 var Client = mongoose.model('Client',clientSchema)
-router.use(function (req :Request, res:Response, next: NextFunction) {
-  // .. some logic here .. like any other middleware
-  next()
-})
 router.get('/', (req: express.Request,res: Response)=>{
+  let searchObject = {}
+  if(req.query.searchTerm!='')
+    searchObject =
+      [
+        {first_name: {$regex:req.query.searchTerm,$options: "g"}},
+        {last_name: {$regex:req.query.searchTerm,$options: "g"}}
+      ]
+  console.log(req.query.searchTerm==''?{}:{$or:searchObject})
+  Client.find(req.query.searchTerm==''?{}:{$or:searchObject},null,{skip:(5*(parseInt(req.query.page)-1)),limit:5}).sort( { date_created: -1 } ).then((results:any)=>{
+    Client.count(req.query.searchTerm==''?{}:{$or:searchObject}).then((count:number)=>{
+          res.send({count,results})
+    })
 
-  Client.find({},null,{skip:10*(req.body.page-1),limit:10}).then((results:any)=>{
-    res.send(results)
   })
 })
-router.post('/', (req:express.Request, res:Response)=>{
+router.post('/',upload.none(), (req:express.Request, res:Response)=>{
   if(!req.body.first_name){
     res.status(422).send('Missing param first_name')
     return
@@ -55,35 +63,36 @@ router.post('/', (req:express.Request, res:Response)=>{
     res.status(422).send('Missing param telephone')
     return
   }
-  if(!req.body.FK_user){
+  if(!req.body.FK_User){
     res.status(422).send('Missing param FK_user')
     return
   }
 
 
-
-
+  req.body.date_created = Date.now();
   let newClient = new Client(req.body);
   newClient.save((err:any)=>{
      if(err){
        res.status(500).send({path:err.path,message:err.message})
+       return
      }else{
-       res.send(newClient._id)
+       res.send(newClient)
     }
   });
 })
 router.delete('/',(req:any,res:any)=>{
+  console.log(req.body)
   if(!req.body._id){
     res.status(422).send('Missing param id');
     return
   }
   Client.deleteOne({_id: req.body._id},(err:any)=>{
     if(err) throw err
-    res.status(200).send('deleted')
+    console.log(req.body)
+    res.status(200).send({_id:req.body._id})
   })
 })
-router.put('/',(req:any,res:any)=>{
-  console.log(req.body.id)
+router.put('/',upload.none(),(req:any,res:any)=>{
   if(!req.body._id){
     res.status(422).send('Missing param _id');
     return

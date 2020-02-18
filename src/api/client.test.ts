@@ -12,7 +12,7 @@ const newClient : IClient = {
   foreign_address :'sfdfds',
   email : 'sfdsfd',
   telephone :'+4522222222',
-  FK_user: 10
+  FK_User: 10
 }
 describe('Test /POST client',()=>{
   let newClientId: any;
@@ -99,7 +99,7 @@ describe('Test /POST client',()=>{
   it('should fail missing FK_user',async()=>{
     let postThrow = async()=> await request(app)
     .post('/client')
-    .send(removeProp(newClient,'FK_user'))
+    .send(removeProp(newClient,'FK_User'))
     .catch(e=>{throw e})
     .then((res:request.Response)=>[res.error.status,res.error.text]);
     expect(await postThrow()).toEqual([422,'Missing param FK_user'])
@@ -121,16 +121,14 @@ describe('Test /DELETE client',()=>{
     newClientId = await request(app)
     .post('/client')
     .send(newClient)
-    .catch(e=>{throw e})
+    .catch(e=>{throw e;})
     .then((res:request.Response)=>res.body)
-    console.log(newClientId)
   })
   afterEach(async()=>{
     await request(app)
     .delete('/client')
     .send({_id:newClientId})
     .catch(e=>{throw e})
-    .then((res:request.Response)=>{console.log(res.error)})
 
   })
   it('should fail no id provided',async()=>{
@@ -202,8 +200,8 @@ describe('Test /GET clients',()=>{
       await request(app)
       .delete('/client')
       .send({_id: newClientsIds[i]})
-      .catch(e=>{throw e})
-      console.log(i,newClientsIds[i])
+      .catch(e=>{throw e;})
+      .then()
     }
     newClientsIds=[]
   })
@@ -214,7 +212,7 @@ describe('Test /GET clients',()=>{
     .catch(e=>{throw e})
     .then((res:request.Response)=>res.body)
 
-    expect(clients.length).toBe(10)
+    expect(clients.length).toBe(5)
   })
   it('should get second page 5 elements',async()=>{
     let clients: Array<any> = await request(app)
@@ -223,7 +221,7 @@ describe('Test /GET clients',()=>{
     .catch(e=>{throw e})
     .then((res:request.Response)=>res.body)
 
-    expect(clients.length).toBe(10)
+    expect(clients.length).toBe(5)
   })
 
 })

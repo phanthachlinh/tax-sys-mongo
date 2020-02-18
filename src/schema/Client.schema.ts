@@ -12,6 +12,7 @@ const clientSchema = new Schema({
 	foreign_address :String,
 	email :String,
 	telephone :String,
+	date_created:Date,
 	FK_user: Number
 });
 export default clientSchema
