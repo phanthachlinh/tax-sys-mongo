@@ -7,10 +7,7 @@ const upload = multer()
 var Case = mongoose.model('Case',caseSchema)
 router.get('/', (req: express.Request,res: Response)=>{
 
-  console.log(req.query)
-  console.log((5*(parseInt(req.query.page)-1)))
   Case.find({FK_Mongo_Client: req.query.clientId},null,{skip:(5*(parseInt(req.query.page)-1)),limit:5}).sort( { date_created: -1 } ).then((results:any)=>{
-    console.log(results)
     Case.count({}).then((count:number)=>{
           res.send({count,results})
     })
@@ -18,7 +15,6 @@ router.get('/', (req: express.Request,res: Response)=>{
   })
 })
 router.post('/', (req:express.Request, res:Response)=>{
-  console.log(req)
   if(typeof req.body.status === 'undefined'){
     res.status(422).send('Missing param status')
     return
@@ -58,12 +54,10 @@ router.delete('/',(req:any,res:any)=>{
   }
   Case.deleteOne({_id: req.query._id},(err:any)=>{
     if(err) throw err
-    console.log(req.body)
     res.status(200).send({_id:req.query._id})
   })
 })
 router.put('/',upload.none(),(req:any,res:any)=>{
-  console.log(req.body)
   if(!req.body._id){
     res.status(422).send('Missing param _id');
     return

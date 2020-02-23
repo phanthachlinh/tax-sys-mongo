@@ -7,7 +7,11 @@
     "jsx": "react",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "types" : ["express","jest"]
-
+    "types" : ["express","jest"],
+    "noImplicitThis":true,
+    "strictNullChecks":true,
+    "strictPropertyInitialization":true,
+    "strictBindCallApply":true,
+    "strictFunctionTypes":true
   }
 }

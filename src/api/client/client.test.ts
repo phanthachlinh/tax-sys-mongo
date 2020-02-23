@@ -1,5 +1,5 @@
 import * as request from 'supertest';
-import {app} from '../app';
+import {app} from '../../app';
 import IClient from './client.d'
 const newClient : IClient = {
   first_name: 'Ccccchris',
@@ -206,22 +206,22 @@ describe('Test /GET clients',()=>{
     newClientsIds=[]
   })
   it('should get first page 5 elements',async()=>{
-    let clients: Array<any> = await request(app)
+    let clients: any= await request(app)
     .get('/client')
     .send('page=1')
     .catch(e=>{throw e})
     .then((res:request.Response)=>res.body)
 
-    expect(clients.length).toBe(5)
+    expect(clients.results.length).toBe(5)
   })
   it('should get second page 5 elements',async()=>{
-    let clients: Array<any> = await request(app)
+    let clients: any = await request(app)
     .get('/client')
     .send('page=2')
     .catch(e=>{throw e})
     .then((res:request.Response)=>res.body)
 
-    expect(clients.length).toBe(5)
+    expect(clients.results.length).toBe(5)
   })
 
 })

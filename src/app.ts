@@ -1,5 +1,5 @@
 const express = require("express");
-const clientRouter = require('./api/client.ts');
+const clientRouter = require('./api/client/client.ts');
 
 const caseRouter = require('./api/case.ts');
 import {initMongoose} from './mongoInstance';

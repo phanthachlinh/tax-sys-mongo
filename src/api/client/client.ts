@@ -1,22 +1,28 @@
 import express,{Response, NextFunction} from 'express'
 import IClient from './client.d';
 var router = require('express').Router();
-var mongoose = require('../mongoInstance.ts').getMongoose();
-const clientSchema = require('../schema/Client.schema.ts').default;
+var mongoose = require('../../mongoInstance.ts').getMongoose();
+const clientSchema = require('../../schema/Client.schema.ts').default;
 const multer = require('multer');
 const upload = multer()
 var Client = mongoose.model('Client',clientSchema)
 router.get('/', (req: express.Request,res: Response)=>{
-  let searchObject = {}
-  if(req.query.searchTerm!='')
+  let searchObject:Array<any> = []
+  console.log(req.query)
+
+  console.log('sfd')
+  console.log(req.query.searchTerm!=''&&typeof req.query.searchTerm!=='undefined')
+  if(req.query.searchTerm!=''&&typeof req.query.searchTerm!=='undefined')
     searchObject =
       [
         {first_name: {$regex:req.query.searchTerm,$options: "g"}},
         {last_name: {$regex:req.query.searchTerm,$options: "g"}}
       ]
-  console.log(req.query.searchTerm==''?{}:{$or:searchObject})
-  Client.find(req.query.searchTerm==''?{}:{$or:searchObject},null,{skip:(5*(parseInt(req.query.page)-1)),limit:5}).sort( { date_created: -1 } ).then((results:any)=>{
-    Client.count(req.query.searchTerm==''?{}:{$or:searchObject}).then((count:number)=>{
+      // console.log(!req.query.searchTerm||req.query.searchTerm==''?{}:{$or:searchObject})
+  Client.find(!searchObject[0]?{}:{$or:searchObject},null,{skip:(5*(parseInt(req.query.page)-1)),limit:5}).sort( { date_created: -1 } ).then((results:any)=>{
+    Client.count(!searchObject[0]?{}:{$or:searchObject}).then((count:number)=>{
+
+      console.log({count,results})
           res.send({count,results})
     })
 
@@ -81,14 +87,12 @@ router.post('/',upload.none(), (req:express.Request, res:Response)=>{
   });
 })
 router.delete('/',(req:any,res:any)=>{
-  console.log(req.body)
   if(!req.body._id){
     res.status(422).send('Missing param id');
     return
   }
   Client.deleteOne({_id: req.body._id},(err:any)=>{
     if(err) throw err
-    console.log(req.body)
     res.status(200).send({_id:req.body._id})
   })
 })
