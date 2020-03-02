@@ -23,12 +23,10 @@ export default {
 		})
 	},
 	updateCase: async (_id: string, country: any, status: number) => {
-		console.log(_id, country)
 		await Case.findOneAndUpdate({ _id }, { "$set": { country, status } }, { new: true }, (err: any) => { if (err) throw err })
 		return true
 	},
 	removeCase: async (_id: string) => {
-		console.log(_id)
 		await Case.findByIdAndRemove(_id, ((err: any) => {
 			if (err)
 				throw err

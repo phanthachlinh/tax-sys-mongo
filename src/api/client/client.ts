@@ -4,7 +4,6 @@ var mongoose = require('../../mongoInstance.ts').getMongoose();
 var Client = mongoose.model('Client', clientSchema)
 export default {
 	getClients: async (searchTerm: string, page: number) =>
-
 		await Client.aggregate(getAggregations(searchTerm, page)).then((response: any, error: any) => {
 			return {
 				results: response[0].results,
@@ -27,7 +26,6 @@ export default {
 			if (input[key] === 'undefined')
 				delete input[key]
 		})
-		console.log(input)
 		await Client.findOneAndUpdate({ _id }, { "$set": input }, { new: true }, (err: any) => { if (err) throw err })
 		return true
 	},

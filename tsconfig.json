@@ -2,16 +2,17 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "esNext",
     "target": "es5",
     "jsx": "react",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "types" : ["express","jest"],
+    "types" : ["express","jest","graphql"],
     "noImplicitThis":true,
     "strictNullChecks":true,
     "strictPropertyInitialization":true,
     "strictBindCallApply":true,
-    "strictFunctionTypes":true
+    "strictFunctionTypes":true,
+    "moduleResolution": "node"
   }
 }

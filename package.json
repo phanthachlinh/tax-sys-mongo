@@ -6,6 +6,7 @@
   "dependencies": {
     "@apollo/federation": "^0.12.1",
     "apollo-server": "^2.10.1",
+    "apollo-server-testing": "^2.10.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -35,7 +36,7 @@
   "scripts": {
     "start": "webpack --hot && node ./dist/server.mongo.js",
     "build": "webpack",
-    "test": "jODE_ENV=test jest --forceExit --watch-all --runInBand"
+    "test": "jest --forceExit --watch-all "
   },
   "keywords": [],
   "author": "",
